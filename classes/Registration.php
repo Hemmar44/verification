@@ -94,23 +94,9 @@ class Registration extends Database {
    public function addError($error){
        $this->_errors[] = $error;
    }
-   /*
-   public function passed(){
-       return $this->_pass;
-   }*/
    
-   public function selectColumn($tableName, $column) {
-            //select all elements form database
-            $stmt = $this->_pdo->query("SELECT {$column} FROM {$tableName}");
-            return $stmt->fetchAll(PDO::FETCH_COLUMN);
-    }
-    
-    
-    public function selectColumns($tableName, $columns = array()) {
-            //select all elements form database
-            $stmt = $this->_pdo->query("SELECT {$column} FROM {$tableName}");
-            return $stmt->fetchAll(PDO::FETCH_COLUMN);
-    }
+   
+   
 
 }
 

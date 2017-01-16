@@ -16,8 +16,13 @@ class Login extends Database {
        $auth = $this->filter($auth, FILTER_SANITIZE_STRING);
        
        if($this->_user = $this->selectOr($tableName, $fields)){
-           $this->getUser();
-            }
+           if($this->getUser()[0]["active"]===0) {
+               $this->addError("You need to authenticate your account first, check your email please") ;
+           }
+           else {
+               $this->getUser();
+           }
+        }
        else if(empty($auth)){
            $this->addError("Fill nick") ;
             }

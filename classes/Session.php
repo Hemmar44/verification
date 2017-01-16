@@ -5,7 +5,9 @@ require_once 'core/initialize.php';
 class Session {
     private static $_message;
     private static $_news;
-    
+    public static $_key;
+
+
     //method that checks if _SESSION is not empty if its not,  set it to array equal an argument, else
     //it set _SESSION to array equal an argument;
     public static function set($user = array()) {
@@ -49,6 +51,30 @@ class Session {
                 return false;
             }
     }
+    //log user out and redirects
+    public static function logout() {
+        session_unset();
+        redirect_to("index.php");
+    }
+    
+    //sets a key of a session(using it is optional)
+    public static function key($nick, $id) {
+        return self::$_key = md5($nick.$id);
+    }
+
+    //checks if user is logged in
+    public static function isLogged($array = array(), $key='') {
+        if(!isset($array[$key])) {
+            redirect_to("index.php");
+            exit();
+        }
+        else {
+            return true;
+        }
+   
+           
+    }
+            
 
 }
 ?>

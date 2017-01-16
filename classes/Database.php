@@ -10,7 +10,7 @@ class Database {
     private $_count;
     private $_all;
     private $_one;
-    private $_instance;
+    private static $_instance = null;
 
 
     public function __construct() {
@@ -46,6 +46,43 @@ class Database {
                 $x++;
             }
             $sql = "SELECT * FROM {$tableName} WHERE {$set} ";
+            $stmt = $this->_pdo->prepare($sql);
+            $stmt->execute(array_values($names));
+            return $user = $stmt->fetchAll();
+    }
+    
+    public function selectSingle($tableName, $field, $names = array()) {
+            $set = '';
+            $x=1;
+            //creating name = ? pairs
+                foreach($names as $name => $value) {
+                $set .= "{$name} = ?";
+                //adding comma strings
+                if($x < count($names)){
+                    $set .= ' OR ';
+                }
+                $x++;
+            }
+            $sql = "SELECT $field FROM {$tableName} WHERE {$set} ";
+            $stmt = $this->_pdo->prepare($sql);
+            $stmt->execute(array_values($names));
+            return $user = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+    
+    public function selectSome($tableName, $fields = array(), $names = array()) {
+            $fields = implode(", ",  $fields);
+            $set = '';
+            $x=1;
+            //creating name = ? pairs
+                foreach($names as $name => $value) {
+                $set .= "{$name} = ?";
+                //adding comma strings
+                if($x < count($names)){
+                    $set .= ' OR ';
+                }
+                $x++;
+            }
+            $sql = "SELECT $fields FROM {$tableName} WHERE {$set} ";
             $stmt = $this->_pdo->prepare($sql);
             $stmt->execute(array_values($names));
             return $user = $stmt->fetchAll();
@@ -122,7 +159,12 @@ class Database {
             return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
     
-     
+   public function selectColumns($tableName, $columns = array()) {
+            //select all elements form database
+            $stmt = $this->_pdo->query("SELECT {$column} FROM {$tableName}");
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+       
     
 
 }
