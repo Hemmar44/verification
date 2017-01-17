@@ -7,7 +7,7 @@ global $nick ;
 $check = new Registration; 
 
 if($check->submitted()){
-$_SESSION["nick"] = $nick = $check->checkNick($_POST["nick"]);
+$nick = $check->checkNick($_POST["nick"]);
 $email = $check->checkEmail($_POST["email"]);
 $password = $check->checkPassword($_POST["password"], $_POST["password_again"]);
 $terms = $check->checkTerms($_POST,"terms");
@@ -64,7 +64,7 @@ if(isset($_GET) && isset($_GET["verify"])) {
 }
 
     else{
-        echo "We can't create your account at the moment, please try again later";
+        die("We can't create your account at the moment, please try again later");
     }
     
 }

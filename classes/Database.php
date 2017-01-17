@@ -131,6 +131,7 @@ class Database {
            array_push($values, $id);
            //print_r($values);
            $stmt->execute($values);
+           return $stmt->rowCount();
         }
         
         public static function getInstance() {
